@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Present From Kush To Ellu 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Landing Page */
+        .landing {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .landing h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #d4af37, #aa8b56, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .landing p {
+            font-size: 1.5rem;
+            color: #c9a961;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #c9a961, #d4af37);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Section Styles */
+        section {
+            min-height: 100vh;
+            padding: 80px 20px;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #d4af37, #c9a961);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            border: 2px solid #c9a961;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: #c9a961;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #c9a961;
+            color: #1a1a1a;
+        }
+
+        /* Photo Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .photo-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        .photo-card.featured {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.3);
+        }
+
+        .photo-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.3));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .photo-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Love Letter */
+        .letter-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 60px;
+            border-radius: 20px;
+            border: 2px solid #c9a961;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .letter-text {
+            font-size: 1.3rem;
+            line-height: 2;
+            color: #e5e5e5;
+            font-family: 'Georgia', serif;
+            text-align: justify;
+        }
+
+        .letter-text .highlight {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-size: 1.5rem;
+            color: #c9a961;
+            font-style: italic;
+        }
+
+        /* Reasons */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .reason-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .reason-card:hover {
+            border-color: #c9a961;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .reason-number {
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .reason-text {
+            font-size: 1.5rem;
+            color: #e5e5e5;
+        }
+
+        /* Virtual Hug */
+        .hug-container {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hug-btn {
+            padding: 30px 60px;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #c9a961, #d4af37);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .hug-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
+        }
+
+        .hug-message {
+            font-size: 2rem;
+            color: #d4af37;
+            margin-top: 40px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .hug-message.show {
+            opacity: 1;
+        }
+
+        /* Hearts Animation */
+        .heart {
+            position: fixed;
+            font-size: 2rem;
+            color: #c9a961;
+            pointer-events: none;
+            animation: float 4s ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .landing h1 {
+                font-size: 2.5rem;
+            }
+            
+            .landing p {
+                font-size: 1.2rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .photo-card.featured {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            
+            .letter-container {
+                padding: 30px;
+            }
+            
+            .letter-text {
+                font-size: 1.1rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                bottom: 10px;
+                padding: 10px 15px;
+            }
+            
+            .nav-btn {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing" id="landing">
+        <div class="container">
+            <h1>✨ For My Ellu ✨</h1>
+            <p>A Love Letter From Across The Miles</p>
+            <button class="btn" onclick="startJourney()">Open Your Gift 💝</button>
+        </div>
+    </div>
+
+    <!-- Photo Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2>📸 Our Beautiful Moments</h2>
+            <div class="gallery">
+                <div class="photo-card featured">
+                    <img src="photo1.png" alt="Us Together">
+                </div>
+                <div class="photo-card featured">
+                    <img src="photo2.jpg" alt="Us Together">
+                </div>
+                <div class="photo-card featured">
+                    <img src="photo11.png" alt="Us Together">
+                </div>
+                <div class="photo-card">
+                    <img src="photo12.jpg" alt="Beautiful Ellu">
+                </div>
+                <div class="photo-card">
+                    <img src="photo13.jpg" alt="Beautiful Ellu">
+                </div>
+                <div class="photo-card">
+                    <img src="photo14.jpg" alt="Handsome Kush">
+                </div>
+                <div class="photo-card">
+                    <img src="photo15.jpg" alt="Handsome Kush">
+                </div>
+                <div class="photo-card">
+                    <img src="photo16.jpg" alt="Beautiful Ellu">
+                </div>
+                <div class="photo-card">
+                    <img src="photo17.jpg" alt="Beautiful Ellu">
+                </div>
+                <div class="photo-card">
+                    <img src="photo20.jpg" alt="Kush">
+                </div>
+                 <div class="photo-card">
+                    <img src="photo18.jpg" alt="Kush">
+                </div>
+                 <div class="photo-card">
+                    <img src="photo21.jpg" alt="Kush">
+                </div>
+                  <div class="photo-card">
+                    <img src="photo5.jpg" alt="Kush">
+                </div>
+                   <div class="photo-card">
+                    <img src="photo3.jpg" alt="Kush">
+                </div>
+                
+                   <div class="photo-card">
+                    <img src="photo4.png" alt="Kush">
+                </div>
+                 <div class="photo-card">
+                    <img src="photo9.jpg" alt="Kush">
+                </div>
+                   <div class="photo-card">
+                    <img src="photo8.jpg" alt="Kush">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Letter Section -->
+    <section id="letter">
+        <div class="container">
+            <h2>💌 A Letter From My Soul To Yours</h2>
+            <div class="letter-container">
+                <div class="letter-text">
+                    My Dearest Ellu,<br><br>
+
+                    In a world filled with billions of souls, somehow <span class="highlight">yours found mine</span>, and everything changed. What we share transcends distance, time zones, and oceans—it's a connection that runs deeper than words can capture.<br><br>
+
+                    You and I, we are <span class="highlight">pure and genuine</span> in a way that sets us apart from the entire world. While others search endlessly, we found something rare—a love that speaks from soul to soul, heart to heart, without pretense or masks.<br><br>
+
+                    Every day with you reminds me that <span class="highlight">real love isn't about proximity</span>—it's about two hearts beating in perfect rhythm, no matter how many miles separate them. Your presence in my life has shown me what it means to truly connect with another person.<br><br>
+
+                    In your eyes, I see my home. In your smile, I find my peace. In your love, I discover my purpose. You make me want to be better, stronger, and more worthy of the incredible gift that is your heart.<br><br>
+
+                    We are not just boyfriend and girlfriend or husband and wife—we are <span class="highlight">two souls intertwined by destiny</span>, bound by something the world can't quite understand. And I wouldn't have it any other way.<br><br>
+
+                    Distance may keep our hands apart, but nothing can separate our hearts. You carry mine with you always, just as I carry yours.<br><br>
+
+                    <span class="highlight">Forever yours, from my soul to yours,</span><br>
+                    <div class="signature">~ Kush 💕</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reasons Section -->
+    <section id="reasons">
+        <div class="container">
+            <h2>💝 Why I Love You</h2>
+            <div class="reasons-grid">
+                <div class="reason-card">
+                    <div class="reason-number">01</div>
+                    <div class="reason-text">Your Pure Heart</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">02</div>
+                    <div class="reason-text">Your Genuine Soul</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">03</div>
+                    <div class="reason-text">So Caring & Kind</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">04</div>
+                    <div class="reason-text">You Love Me Deeply</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">05</div>
+                    <div class="reason-text">Your Beautiful Soul</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">06</div>
+                    <div class="reason-text">Pretty</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">07</div>
+                    <div class="reason-text">Always Supportive</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">08</div>
+                    <div class="reason-text">Your Beautiful Eyes</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-number">09</div>
+                    <div class="reason-text">Your Birth-Mark</div>
+                </div>
+                   <div class="reason-card">
+                    <div class="reason-number">10</div>
+                    <div class="reason-text">Your loyality</div>
+                </div>
+                   <div class="reason-card">
+                    <div class="reason-number">11</div>
+                    <div class="reason-text">I can say more but all i know we sweared with purity in our love to stay together for ever</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Virtual Hug Section -->
+    <section id="hug">
+        <div class="container">
+            <h2>🤗 Need A Hug?</h2>
+            <div class="hug-container">
+                <button class="hug-btn" onclick="sendHug()">Click For A Hug 💕</button>
+                <div class="hug-message" id="hugMessage">
+                    Hugging you tight, bebu 🥰<br>
+                    Sending all my love from India to Philippines 💕
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button class="nav-btn" onclick="showSection('gallery')">Photos</button>
+        <button class="nav-btn" onclick="showSection('letter')">Letter</button>
+        <button class="nav-btn" onclick="showSection('reasons')">Reasons</button>
+        <button class="nav-btn" onclick="showSection('hug')">Hug Me</button>
+    </div>
+
+    <script>
+        function startJourney() {
+            document.getElementById('landing').style.display = 'none';
+            showSection('gallery');
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function sendHug() {
+            // Show message
+            const message = document.getElementById('hugMessage');
+            message.classList.add('show');
+
+            // Create hearts
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 5000);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '💕';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.bottom = '0';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        // Add hover effect to photo cards
+        document.querySelectorAll('.photo-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+    </script>
+</body>
+</html>
