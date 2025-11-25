@@ -133,52 +133,160 @@
             color: #1a1a1a;
         }
 
-        /* Photo Gallery */
+        /* Photo Gallery - Masonry Layout */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            column-count: 3;
+            column-gap: 25px;
             margin-top: 40px;
         }
 
         .photo-card {
             position: relative;
             overflow: hidden;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s ease;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            break-inside: avoid;
+            background: #fff;
+            padding: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(0deg);
+            cursor: pointer;
+        }
+
+        .photo-card:nth-child(odd) {
+            transform: rotate(-1deg);
+        }
+
+        .photo-card:nth-child(even) {
+            transform: rotate(1deg);
         }
 
         .photo-card.featured {
-            grid-column: span 2;
-            grid-row: span 2;
+            border: 4px solid #d4af37;
+            padding: 20px;
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
+        }
+
+        .photo-card.featured::before {
+            content: '💕';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.5rem;
+            z-index: 10;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         .photo-card img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            display: block;
+            border-radius: 8px;
             transition: transform 0.4s ease;
         }
 
-        .photo-card:hover img {
-            transform: scale(1.3);
+        .photo-card:hover {
+            transform: rotate(0deg) translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
+            z-index: 100;
         }
 
-        .photo-card::after {
-            content: '';
+        .photo-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-caption {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.3));
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: #d4af37;
+            padding: 20px 15px 15px;
+            font-size: 0.9rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            border-radius: 0 0 8px 8px;
         }
 
-        .photo-card:hover::after {
-            opacity: 1;
+        .photo-card:hover .photo-caption {
+            transform: translateY(0);
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 80px rgba(212, 175, 55, 0.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            color: #d4af37;
+            cursor: pointer;
+            z-index: 10000;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            color: #d4af37;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
         }
 
         /* Love Letter */
@@ -248,10 +356,10 @@
             color: #e5e5e5;
         }
 
-        /* Virtual Hug */
+        /* Virtual Hug Section */
         .hug-container {
             text-align: center;
-            padding: 100px 20px;
+            padding: 60px 20px;
         }
 
         .hug-btn {
@@ -282,6 +390,164 @@
 
         .hug-message.show {
             opacity: 1;
+        }
+
+        /* Open When Letters */
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .letter-envelope {
+            background: rgba(201, 169, 97, 0.1);
+            border: 2px solid #c9a961;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter-envelope:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+        }
+
+        .letter-envelope.opened {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .envelope-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .envelope-title {
+            font-size: 1.3rem;
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .envelope-content {
+            display: none;
+            font-size: 1.1rem;
+            color: #e5e5e5;
+            line-height: 1.8;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #c9a961;
+        }
+
+        .envelope-content.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Wish Jar */
+        .wish-jar-container {
+            text-align: center;
+            margin: 60px auto;
+            max-width: 600px;
+        }
+
+        .jar {
+            width: 300px;
+            height: 400px;
+            margin: 0 auto 40px;
+            position: relative;
+            background: linear-gradient(180deg, rgba(201,169,97,0.1) 0%, rgba(201,169,97,0.2) 100%);
+            border: 3px solid #c9a961;
+            border-radius: 20px 20px 40px 40px;
+            box-shadow: inset 0 0 30px rgba(212,175,55,0.2);
+        }
+
+        .jar::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #c9a961;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .jar-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .wish-btn {
+            padding: 20px 50px;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, #c9a961, #d4af37);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .wish-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .wish-display {
+            min-height: 100px;
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #c9a961;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            color: #e5e5e5;
+            line-height: 1.8;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .wish-display.show {
+            opacity: 1;
+            animation: wishAppear 0.6s ease;
+        }
+
+        @keyframes wishAppear {
+            0% {
+                transform: scale(0.8) rotate(-5deg);
+            }
+            50% {
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
         }
 
         /* Hearts Animation */
@@ -319,9 +585,8 @@
                 font-size: 2rem;
             }
             
-            .photo-card.featured {
-                grid-column: span 1;
-                grid-row: span 1;
+            .gallery {
+                column-count: 1;
             }
             
             .letter-container {
@@ -342,6 +607,26 @@
                 font-size: 0.9rem;
                 padding: 8px 15px;
             }
+
+            .letters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .jar {
+                width: 250px;
+                height: 350px;
+            }
+
+            .lightbox-nav {
+                font-size: 2rem;
+                padding: 10px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery {
+                column-count: 2;
+            }
         }
     </style>
 </head>
@@ -360,58 +645,98 @@
         <div class="container">
             <h2>📸 Our Beautiful Moments</h2>
             <div class="gallery">
-                <div class="photo-card featured">
-                    <img src="photo1.png" alt="Us Together">
+                <div class="photo-card featured" onclick="openLightbox(0)">
+                    <img src="photo3.jpg" alt="Us Together" loading="lazy">
+                    <div class="photo-caption"> Your's K ✨</div>
                 </div>
-                <div class="photo-card featured">
-                    <img src="photo2.jpg" alt="Us Together">
+                <div class="photo-card" onclick="openLightbox(1)">
+                    <img src="photo5.jpg" alt="Beautiful Ellu" loading="lazy">
+                    <div class="photo-caption">alluring🌹</div>
+
                 </div>
-                <div class="photo-card featured">
-                    <img src="photo11.png" alt="Us Together">
+                <div class="photo-card" onclick="openLightbox(2)">
+                    <img src="photo6.jpg" alt="Beautiful Ellu" loading="lazy">
+                    <div class="photo-caption">sweetu<3</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo12.jpg" alt="Beautiful Ellu">
+                <div class="photo-card featured" onclick="openLightbox(3)">
+                    <img src="photo9.jpg" alt="Us Together" loading="lazy">
+                    <div class="photo-caption">Stunning 🌟</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo13.jpg" alt="Beautiful Ellu">
+                <div class="photo-card" onclick="openLightbox(4)">
+                    <img src="photo4.png" alt="Handsome Kush" loading="lazy">
+                    <div class="photo-caption">Your Kush 😊</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo14.jpg" alt="Handsome Kush">
+                <div class="photo-card" onclick="openLightbox(5)">
+                    <img src="photo1.png" alt="Handsome Kush" loading="lazy">
+                    <div class="photo-caption">Our Special Moments 💑</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo15.jpg" alt="Handsome Kush">
+                <div class="photo-card" onclick="openLightbox(6)">
+                    <img src="photo2.jpg" alt="Beautiful Ellu" loading="lazy">
+                    <div class="photo-caption">K & E - Together Forever 💕</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo16.jpg" alt="Beautiful Ellu">
+                <div class="photo-card featured" onclick="openLightbox(7)">
+                    <img src="photo11.png" alt="Us Together" loading="lazy">
+                    <div class="photo-caption">we~Pure💫</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo17.jpg" alt="Beautiful Ellu">
+                <div class="photo-card" onclick="openLightbox(8)">
+                    <img src="photo7.jpg" alt="Beautiful Ellu" loading="lazy">
+                    <div class="photo-caption">Your's Sexy✨</div>
                 </div>
-                <div class="photo-card">
-                    <img src="photo20.jpg" alt="Kush">
+                <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo8.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">Thinking of You 💫</div>
                 </div>
-                 <div class="photo-card">
-                    <img src="photo18.jpg" alt="Kush">
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo15.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">E.K💫</div>
                 </div>
-                 <div class="photo-card">
-                    <img src="photo21.jpg" alt="Kush">
+                  <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo10.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption"> cutu 🥰</div>
                 </div>
-                  <div class="photo-card">
-                    <img src="photo5.jpg" alt="Kush">
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo20.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">E.K💫</div>
                 </div>
-                   <div class="photo-card">
-                    <img src="photo3.jpg" alt="Kush">
+                  <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo19.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">Your's K ;)</div>
+                </div>
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo12.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">For Ellu💫</div>
+                </div>
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo13.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">For Ellu💫</div>
+                </div>
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo21.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">Your's K💫</div>
+                </div>
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo14.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">For Kushu💫</div>
+                </div>
+                   <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo16.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">For Ellu💫</div>
+                </div>
+                    <div class="photo-card" onclick="openLightbox(9)">
+                    <img src="photo18.jpg" alt="Kush" loading="lazy">
+                    <div class="photo-caption">For Ellu💫</div>
                 </div>
                 
-                   <div class="photo-card">
-                    <img src="photo4.png" alt="Kush">
+            </div>
+
+            <!-- Lightbox -->
+            <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+                <span class="lightbox-close">&times;</span>
+                <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); changePhoto(-1)">&#10094;</span>
+                <div class="lightbox-content">
+                    <img id="lightbox-img" src="" alt="">
                 </div>
-                 <div class="photo-card">
-                    <img src="photo9.jpg" alt="Kush">
-                </div>
-                   <div class="photo-card">
-                    <img src="photo8.jpg" alt="Kush">
-                </div>
+                <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); changePhoto(1)">&#10095;</span>
             </div>
         </div>
     </section>
@@ -438,7 +763,7 @@
 
                     <span class="highlight">Forever yours, from my soul to yours,</span><br>
                     <div class="signature">Your's one n only ~ KushuSushuLove 💕</div>
-                </div>
+
             </div>
         </div>
     </section>
@@ -470,7 +795,7 @@
                 </div>
                 <div class="reason-card">
                     <div class="reason-number">06</div>
-                    <div class="reason-text">Pretty</div>
+                    <div class="reason-text">You're So Pretty</div>
                 </div>
                 <div class="reason-card">
                     <div class="reason-number">07</div>
@@ -482,13 +807,13 @@
                 </div>
                 <div class="reason-card">
                     <div class="reason-number">09</div>
-                    <div class="reason-text">Your Birth-Mark</div>
+                    <div class="reason-text">Your Cute Birth-Mark</div>
                 </div>
-                   <div class="reason-card">
+                 <div class="reason-card">
                     <div class="reason-number">10</div>
                     <div class="reason-text">Your loyality</div>
                 </div>
-                   <div class="reason-card">
+                  <div class="reason-card">
                     <div class="reason-number">11</div>
                     <div class="reason-text">I can say more but all i know we sweared with purity in our love to stay together for ever</div>
                 </div>
@@ -499,13 +824,77 @@
     <!-- Virtual Hug Section -->
     <section id="hug">
         <div class="container">
-            <h2>🤗 Need A Hug?</h2>
+            <h2>🤗 Love & Comfort Zone</h2>
+            
+            <!-- Hug Button -->
             <div class="hug-container">
                 <button class="hug-btn" onclick="sendHug()">Click For A Hug 💕</button>
                 <div class="hug-message" id="hugMessage">
                     Hugging you tight, bebu 🥰<br>
-                    Sending all my love and Pure Energies from India to Philippines 💕
+                    Sending all my love from India to Philippines 💕
                 </div>
+            </div>
+
+            <!-- Open When Letters -->
+            <h2 style="margin-top: 80px;">💌 Open When...</h2>
+            <div class="letters-grid">
+                <div class="letter-envelope" onclick="toggleLetter(0)">
+                    <div class="envelope-icon">💌</div>
+                    <div class="envelope-title">Open When You Miss Me</div>
+                    <div class="envelope-content" id="letter0">
+                        My dearest Ellu, distance means nothing when you mean everything. Close your eyes and feel my arms around you. I'm right there with you, always. Every beat of my heart whispers your name. Miss you endlessly. 💕
+                    </div>
+                </div>
+
+                <div class="letter-envelope" onclick="toggleLetter(1)">
+                    <div class="envelope-icon">🌙</div>
+                    <div class="envelope-title">Open When You're Sad</div>
+                    <div class="envelope-content" id="letter1">
+                        Bebu, tough times don't last, but tough people do—and you're the strongest person I know. Your smile lights up my world. Let this storm pass, and remember I'm here holding your hand across the miles. You've got this, and you've got me. Forever. 🌈
+                    </div>
+                </div>
+
+                <div class="letter-envelope" onclick="toggleLetter(2)">
+                    <div class="envelope-icon">⚡</div>
+                    <div class="envelope-title">Open When You Need Motivation</div>
+                    <div class="envelope-content" id="letter2">
+                        You are capable of amazing things! Don't let anyone (including yourself) tell you otherwise. Chase your dreams fearlessly. I believe in you more than you'll ever know. You make me proud every single day. Go show the world what my Ellu is made of! 💪✨
+                    </div>
+                </div>
+
+                <div class="letter-envelope" onclick="toggleLetter(3)">
+                    <div class="envelope-icon">🌟</div>
+                    <div class="envelope-title">Open When You Can't Sleep</div>
+                    <div class="envelope-content" id="letter3">
+                        Sweet dreams, my love. Imagine we're together, and I'm holding you close, whispering how much I love you. Let go of today's worries. Tomorrow is a new day full of possibilities. Rest now, beautiful soul. I'll be here when you wake up. Good night, bebu. 🌙💕
+                    </div>
+                </div>
+
+                <div class="letter-envelope" onclick="toggleLetter(4)">
+                    <div class="envelope-icon">😊</div>
+                    <div class="envelope-title">Open When You're Happy</div>
+                    <div class="envelope-content" id="letter4">
+                        Your happiness is my happiness! Seeing you smile makes every struggle worth it. Keep shining, keep laughing, keep being the incredible person you are. Thank you for sharing your joy with me. I'm so lucky to love you. Celebrate this moment! 🎉💝
+                    </div>
+                </div>
+
+                <div class="letter-envelope" onclick="toggleLetter(5)">
+                    <div class="envelope-icon">💖</div>
+                    <div class="envelope-title">Open When You Need A Laugh</div>
+                    <div class="envelope-content" id="letter5">
+                        Remember that time we laughed until we cried over the silliest thing? Your laugh is my favorite sound in the world. Don't take life too seriously, bebu. We're in this together, making memories and being ridiculous. Love you to the moon and back! 😂💕
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wish Jar -->
+            <h2 style="margin-top: 80px;">🎁 My Wishes For You</h2>
+            <div class="wish-jar-container">
+                <div class="jar">
+                    <div class="jar-label">✨ Wish Jar ✨</div>
+                </div>
+                <button class="wish-btn" onclick="pullWish()">Pull A Wish 🎁</button>
+                <div class="wish-display" id="wishDisplay"></div>
             </div>
         </div>
     </section>
@@ -519,42 +908,99 @@
     </div>
 
     <script>
+        // Photo gallery array
+        const photos = [
+            'photo3.jpg', 'photo1.jpg', 'photo2.jpg', 'photo9.jpg', 
+            'photo4.jpg', 'photo5.jpg', 'photo6.jpg', 'photo10.jpg',
+            'photo7.jpg', 'photo8.jpg'
+        ];
+        let currentPhotoIndex = 0;
+
+        // Wishes array
+        const wishes = [
+            "I wish to see your beautiful smile in person every single day 😊",
+            "I wish to hold your hand and never let go 💑",
+            "I wish to make you breakfast in bed someday 🥞",
+            "I wish to watch sunsets with you by my side 🌅",
+            "I wish to wipe away every tear and replace it with laughter 💕",
+            "I wish to grow old with you and create countless memories 👴👵",
+            "I wish to travel the world and explore every corner with you ✈️",
+            "I wish to be the reason you smile every day 😊",
+            "I wish to celebrate every little victory together 🎉",
+            "I wish to dance with you under the stars 💃⭐",
+            "I wish to cook your favorite meals and see your happy face 🍝",
+            "I wish to build our dream home filled with love and laughter 🏡",
+            "I wish to wake up next to you every morning ☀️",
+            "I wish to be your biggest cheerleader in everything you do 📣",
+            "I wish to make you feel cherished every single moment 💖",
+            "I wish to explore hidden cafes and bookstores with you ☕📚",
+            "I wish to learn your language perfectly to speak to your heart 🗣️",
+            "I wish to meet your family and make them smile 👨‍👩‍👧‍👦",
+            "I wish our love grows stronger with each passing day 🌱",
+            "I wish to be the last person you think of before sleep 🌙"
+        ];
+        let usedWishes = [];
+
         function startJourney() {
             document.getElementById('landing').style.display = 'none';
             showSection('gallery');
         }
 
         function showSection(sectionId) {
-            // Hide all sections
             const sections = document.querySelectorAll('section');
             sections.forEach(section => {
                 section.classList.remove('active');
             });
-
-            // Show selected section
             document.getElementById(sectionId).classList.add('active');
 
-            // Update nav buttons
             const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
+        // Lightbox functions
+        function openLightbox(index) {
+            currentPhotoIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = photos[index];
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changePhoto(direction) {
+            currentPhotoIndex += direction;
+            if (currentPhotoIndex < 0) currentPhotoIndex = photos.length - 1;
+            if (currentPhotoIndex >= photos.length) currentPhotoIndex = 0;
+            document.getElementById('lightbox-img').src = photos[currentPhotoIndex];
+        }
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') changePhoto(-1);
+                if (e.key === 'ArrowRight') changePhoto(1);
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+
         function sendHug() {
-            // Show message
             const message = document.getElementById('hugMessage');
             message.classList.add('show');
 
-            // Create hearts
             for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    createHeart();
-                }, i * 100);
+                setTimeout(() => createHeart(), i * 100);
             }
 
-            // Hide message after 5 seconds
             setTimeout(() => {
                 message.classList.remove('show');
             }, 5000);
@@ -567,22 +1013,69 @@
             heart.style.left = Math.random() * window.innerWidth + 'px';
             heart.style.bottom = '0';
             document.body.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 4000);
+            setTimeout(() => heart.remove(), 4000);
         }
 
-        // Add hover effect to photo cards
-        document.querySelectorAll('.photo-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.zIndex = '10';
-            });
+        // Open When Letters
+        function toggleLetter(index) {
+            const content = document.getElementById('letter' + index);
+            const envelope = content.parentElement;
             
-            card.addEventListener('mouseleave', function() {
-                this.style.zIndex = '1';
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                envelope.classList.remove('opened');
+            } else {
+                content.classList.add('show');
+                envelope.classList.add('opened');
+            }
+        }
+
+        // Wish Jar
+        function pullWish() {
+            if (usedWishes.length === wishes.length) {
+                usedWishes = [];
+            }
+            
+            let randomWish;
+            do {
+                randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+            } while (usedWishes.includes(randomWish));
+            
+            usedWishes.push(randomWish);
+            
+            const display = document.getElementById('wishDisplay');
+            display.textContent = randomWish;
+            display.classList.remove('show');
+            setTimeout(() => display.classList.add('show'), 10);
+        }
+
+        // Service Worker for caching
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
+                    const CACHE_NAME = 'kush-ellu-v1';
+                    const urlsToCache = [
+                        './',
+                        'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg', 'photo5.jpg',
+                        'photo6.jpg', 'photo7.jpg', 'photo8.jpg', 'photo9.jpg', 'photo10.jpg'
+                    ];
+
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(urlsToCache))
+                        );
+                    });
+
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                        );
+                    });
+                `)).catch(err => console.log('Service worker registration failed'));
             });
-        });
+        }
     </script>
 </body>
 </html>
